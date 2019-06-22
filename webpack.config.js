@@ -5,23 +5,47 @@ const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
-    mode: "development",
+    // production默认模式(打包的文件已压缩);   development(打包的文件未压缩),默认使用sourceMap
+    mode: "development", 
+    // source-map获取报错代码在源代码的位置，并生成.map文件; inline-source-map不生成.map文件
     devtool: 'inline-source-map',
+    // 打包入口
     entry: {
         "main": "./src/main.js"
     },
+    // 打包出口
     output: {
+        // name相当于entry中的键值
         filename: '[name].js',
         path: path.resolve(__dirname, 'dist')
     },
+    // webpack默认打包的是js，如果遇到打包其他文件，则需要在此处说明使用哪个加载器loader识别其他文件
     module: {
         rules: [{
                 test: /\.vue$/,
                 use: [ 'vue-loader' ]
             },
             {
-                test: /\.css$/,
-                loader: ['style-loader', 'css-loader']
+                test: /\.(styl(us)|css)?$/,
+                loader: [
+                    'vue-style-loader',
+                    'css-loader',
+                    'stylus-loader'
+                ]
+            },
+            {
+                // 正则匹配所有符合要求的文件
+                test: /\.(png|jpg|gif|svg|ttf|woff|eot)$/,
+                // 使用url-loader对图片进行处理
+                use: [
+                    {
+                        loader: 'url-loader',
+                        // 将小于8K的图片以base64的形式打包到js文件中
+                        options: {
+                            limit: 8192
+                        }
+                    }
+                ]
             }
         ]
     },

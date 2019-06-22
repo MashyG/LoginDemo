@@ -22,8 +22,11 @@
     "webpack-cli": "^3.3.4"
   },
   "devDependencies": {
+    "css-loader": "^3.0.0",
+    "file-loader": "^4.0.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
+    "url-loader": "^2.0.0",
     "vue-loader": "^15.7.0",
     "vue-template-compiler": "^2.6.10"
   }
