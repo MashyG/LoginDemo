@@ -23,17 +23,19 @@ module.exports = {
     module: {
         rules: [{
                 test: /\.vue$/,
-                use: [ 'vue-loader' ]
-            },
-            {
+                use: 'vue-loader'
+            },{
+                test: /\.js$/, 
+                loader: 'babel-loader',
+                exclude: /node_modules/
+            },{
                 test: /\.(styl(us)|css)?$/,
                 loader: [
                     'vue-style-loader',
                     'css-loader',
                     'stylus-loader'
                 ]
-            },
-            {
+            },{
                 // 正则匹配所有符合要求的文件
                 test: /\.(png|jpg|gif|svg|ttf|woff|eot)$/,
                 // 使用url-loader对图片进行处理

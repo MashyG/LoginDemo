@@ -1,7 +1,7 @@
 <template>
     <div>
-        <router-link to="/Login" class="homeLogin">登录</router-link>
-        <!-- <router-link to="/Register">注册</router-link> -->
+        <router-link to="/Login" class="homeBtn">登录</router-link>
+        <router-link to="/Register" class="homeBtn">注册</router-link>
     </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-    .homeLogin
+    .homeBtn
         background-color: #03a9f4
         padding: 5px 10px
         text-decoration: none

@@ -4,21 +4,56 @@
             <div class="loginText">登录</div>
             <div class="loginForm">
                 <span class="userName iconfont">&#xe63e;</span>
-                <input type="text" name="userName" placeholder="userName" autocomplete="off" /> 
+                <input type="text" v-model="userName" placeholder="userName" autocomplete="off" /> 
             </div>
             <div class="loginForm">
                 <span class="password iconfont">&#xe658;</span>
-                <input type="password" name="password" placeholder="password" />
+                <input type="password" v-model="password" placeholder="password" />
             </div>
             <div class="loginForget">忘记密码?</div>
-            <div class="loginSubmit" >登录</div>
+            <div class="loginSubmit" @click="submit">登录</div>
         </div>
     </div>
 </template>
 
 <script>
+const axios = require('axios');
 export default {
-    name: "Login"
+    name: "Login",
+    data () {
+        return {
+            userName: '',
+            password: ''
+        }
+    },
+    methods: {
+        submit(){
+            // 保存this的指向，否则下面的then中的this会报错，取不到$router
+            var _self = this
+            if(_self.userName === '' || _self.password === ''){
+                alert('账号或密码不能为空')
+            } else{
+                axios.get('http://localhost:3000/Login', {
+                    params: {
+                        userName: _self.userName,
+                        password: _self.password
+                    }
+                })
+                .then(function (response) {
+                    console.log(response.data)
+                    if(response.data.success === 'success'){
+                        // _self.$router.push({ path: '/LoginSuccess' })
+                        alert('success')
+                    }else if(response.data.error === 'error'){
+                        alert('账号或密码不正确，请重新输入！')
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            }
+        }
+    }
 }
 </script>
 
@@ -47,7 +82,7 @@ export default {
             margin: 10px 0
             .userName
                 position: absolute
-                top: 44%
+                top: 42%
                 left: 0
                 margin: 2px
             .password
@@ -57,6 +92,7 @@ export default {
                 margin: 2px
             input 
                 padding-left: 20px
+                height: 25px
         .loginForget
             width: 50px
             color: white
@@ -67,12 +103,14 @@ export default {
             color: #03a9f4
         .loginSubmit
             margin-top: 15px
-            background-color: #00bcd4
+            background-color: #35baf6
             color: white
             text-align center
             height: 25px
             line-height: 25px
             border-radius: .5rem
             cursor: pointer
+        .loginSubmit:hover
+            background-color: #03a9f4
 </style>
 
