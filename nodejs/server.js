@@ -1,6 +1,10 @@
 const express = require('express')
 const app = express()
 var mysql = require('mysql');
+const bodyParser = require('body-parser')
+
+app.use(bodyParser.urlencoded({ extended: false}))
+app.use(bodyParser.json())
 // 设置跨域
 app.all("*", function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); //设置允许跨域的域名，*代表允许任意域名跨域
@@ -22,7 +26,7 @@ var connection = mysql.createConnection({
 });
 connection.connect();
 
-// 接受请求
+// 登录接受的请求
 app.get('/Login', (req,res) => {
     new Promise(function(resolve,reject){
         connection.query('SELECT * FROM login_user WHERE username = ?', req.query.userName , function (error, results){
@@ -36,7 +40,9 @@ app.get('/Login', (req,res) => {
         // console.log(req.query.password + ':' + pass)
         if(req.query.password == pass){
             res.send({
-                success: 'success'
+                success: 'success',
+                // 设置token
+                token: req.query.userName + 'asdf' + req.query.password
             })
         }else{
             res.send({
@@ -45,6 +51,33 @@ app.get('/Login', (req,res) => {
         }
     }).catch(function(error){
         console.log(error)
+    })
+})
+
+app.post('/Register', (req, res) => {
+    // console.log(req.body.username)
+    // console.log(req.body.password1)
+    new Promise((resolve, reject) => {
+        //插入数据
+        connection.query(
+            "INSERT INTO login_user SET ?",
+            {username: req.body.username, password: req.body.password1},
+            function (err) {
+                if(err){
+                    console.log('[INSERT ERROR] - ', err.message);
+                    reject()
+                } else{
+                    resolve()
+                }
+            })
+    }).then(() => {
+        res.send({
+            success : 'success'
+        })
+    }).catch((err) => {
+        res.send({
+            error : 'error'
+        })
     })
 })
 

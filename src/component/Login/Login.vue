@@ -40,10 +40,16 @@ export default {
                     }
                 })
                 .then(function (response) {
-                    console.log(response.data)
+                    // console.log(response.data)
                     if(response.data.success === 'success'){
-                        // _self.$router.push({ path: '/LoginSuccess' })
-                        alert('success')
+                        // 登录成功跳转
+                        _self.$router.push({ path: '/LoginSuccess' })
+                        // 将接受的token存入vuex中
+                        if(!_self.$store.state.token || response.data.token != _self.$store.state.token){
+                            _self.SaveToken(response.data.token)
+                        }
+                        console.log(response.data.token)
+                        console.log('success')
                     }else if(response.data.error === 'error'){
                         alert('账号或密码不正确，请重新输入！')
                     }
@@ -52,6 +58,10 @@ export default {
                     console.log(error);
                 })
             }
+        },
+        SaveToken(token){
+            // 将token的值传给vuex中的mutation对象的tokenSave方法，然后进行保存token
+            this.$store.commit('tokenSave', token)
         }
     }
 }

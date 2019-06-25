@@ -4,7 +4,8 @@
             <header class="showcase">
                 <h1>登录成功</h1>
             </header>
-            <a href="#" class="btn" @click="logout">退出</a>
+            <router-link to="/LoginedHome" class="btn">首页</router-link>
+            <a class="btn" @click="logout">退出</a>
         </div>
     </div>
 </template>
@@ -14,7 +15,9 @@ export default {
     name: "LoginSuccess",
     methods:{
         logout(){
-            this.$router.push({ path: '/'})
+            if(confirm("确定退出？")){
+                this.$router.push({ path: '/'})
+            }
         }
     }
 }
@@ -54,7 +57,7 @@ export default {
             color: #ffffff
             text-decoration: none
             padding: .5rem 1rem
-            margin: 50px 50px 
+            margin: 50px 20px 
             border: 1px solid #ffffff
             opacity: 0
             animation-name: btn
@@ -63,6 +66,7 @@ export default {
             animation-fill-mode: forwards
             transition-property: transform
             transition-duration: 1s
+            cursor: pointer
         .btn:hover
             transform: rotateY(360deg)
         @keyframes btn
